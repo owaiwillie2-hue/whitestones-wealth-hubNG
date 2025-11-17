@@ -59,8 +59,8 @@ export const TidioChat = () => {
 
     // Load Tidio chat widget for allowed pages
     const loadTidio = () => {
-      if (window.tidioChatApi) {
-        window.tidioChatApi.display('show');
+      if ((window as any).tidioChatApi) {
+        (window as any).tidioChatApi.display('show');
       } else {
         // Initialize Tidio chat
         const script = document.createElement('script');

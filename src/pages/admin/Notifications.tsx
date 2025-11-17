@@ -75,12 +75,12 @@ export const AdminNotifications = () => {
 
       if (sendToAll) {
         // Send to all users + broadcast (NULL user_id)
-        await supabase.from('notifications').insert({
+        await supabase.from('notifications').insert([{
           user_id: null, // Broadcast to all
           title,
           message,
-          category,
-        });
+          category: category as any,
+        }]);
       } else {
         if (!selectedUserId) {
           toast.error('Please select a user');
@@ -88,12 +88,12 @@ export const AdminNotifications = () => {
         }
 
         // Send to specific user
-        await supabase.from('notifications').insert({
+        await supabase.from('notifications').insert([{
           user_id: selectedUserId,
           title,
           message,
-          category,
-        });
+          category: category as any,
+        }]);
       }
 
       toast.success(

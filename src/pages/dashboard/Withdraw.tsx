@@ -48,7 +48,7 @@ const Withdraw = () => {
       .eq('user_id', user.id)
       .single();
 
-    setMainBalance(parseFloat(data?.main_balance || '0'));
+    setMainBalance(parseFloat(String(data?.main_balance || 0)));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

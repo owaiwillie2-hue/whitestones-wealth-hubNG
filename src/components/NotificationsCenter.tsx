@@ -53,8 +53,8 @@ export const NotificationsCenter: React.FC<NotificationsCenterProps> = ({
     }
   };
 
-  const subscribeToNotifications = () => {
-    const { data: { user } } = supabase.auth.getUser();
+  const subscribeToNotifications = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
 
     const channel = supabase

@@ -18,6 +18,7 @@ export type Database = {
         Row: {
           account_active_since: string | null
           id: string
+          investment_balance: number | null
           main_balance: number | null
           profit_balance: number | null
           total_deposited: number | null
@@ -28,6 +29,7 @@ export type Database = {
         Insert: {
           account_active_since?: string | null
           id?: string
+          investment_balance?: number | null
           main_balance?: number | null
           profit_balance?: number | null
           total_deposited?: number | null
@@ -38,6 +40,7 @@ export type Database = {
         Update: {
           account_active_since?: string | null
           id?: string
+          investment_balance?: number | null
           main_balance?: number | null
           profit_balance?: number | null
           total_deposited?: number | null
@@ -74,6 +77,33 @@ export type Database = {
           location?: string | null
           user_agent?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      admin_notes: {
+        Row: {
+          admin_id: string | null
+          created_at: string | null
+          id: string
+          metadata: Json | null
+          note: string
+          user_id: string | null
+        }
+        Insert: {
+          admin_id?: string | null
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          note: string
+          user_id?: string | null
+        }
+        Update: {
+          admin_id?: string | null
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          note?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -247,6 +277,39 @@ export type Database = {
         }
         Relationships: []
       }
+      notifications: {
+        Row: {
+          category: Database["public"]["Enums"]["notification_category"] | null
+          created_at: string | null
+          data: Json | null
+          id: string
+          message: string
+          read: boolean | null
+          title: string
+          user_id: string | null
+        }
+        Insert: {
+          category?: Database["public"]["Enums"]["notification_category"] | null
+          created_at?: string | null
+          data?: Json | null
+          id?: string
+          message: string
+          read?: boolean | null
+          title: string
+          user_id?: string | null
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["notification_category"] | null
+          created_at?: string | null
+          data?: Json | null
+          id?: string
+          message?: string
+          read?: boolean | null
+          title?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           country: string | null
@@ -370,6 +433,45 @@ export type Database = {
         }
         Relationships: []
       }
+      wallet_transfers: {
+        Row: {
+          amount: number
+          created_at: string | null
+          from_wallet: Database["public"]["Enums"]["wallet_type"]
+          id: string
+          meta: Json | null
+          processed_at: string | null
+          reference: string | null
+          status: Database["public"]["Enums"]["transaction_status"] | null
+          to_wallet: Database["public"]["Enums"]["wallet_type"]
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          from_wallet: Database["public"]["Enums"]["wallet_type"]
+          id?: string
+          meta?: Json | null
+          processed_at?: string | null
+          reference?: string | null
+          status?: Database["public"]["Enums"]["transaction_status"] | null
+          to_wallet: Database["public"]["Enums"]["wallet_type"]
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          from_wallet?: Database["public"]["Enums"]["wallet_type"]
+          id?: string
+          meta?: Json | null
+          processed_at?: string | null
+          reference?: string | null
+          status?: Database["public"]["Enums"]["transaction_status"] | null
+          to_wallet?: Database["public"]["Enums"]["wallet_type"]
+          user_id?: string
+        }
+        Relationships: []
+      }
       website_settings: {
         Row: {
           id: string
@@ -467,7 +569,30 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      user_wallets: {
+        Row: {
+          investment_balance: number | null
+          main_balance: number | null
+          profit_balance: number | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          investment_balance?: never
+          main_balance?: number | null
+          profit_balance?: never
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          investment_balance?: never
+          main_balance?: number | null
+          profit_balance?: never
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       has_role: {
@@ -484,6 +609,13 @@ export type Database = {
       app_role: "user" | "admin"
       investment_status: "active" | "completed" | "cancelled"
       kyc_status: "pending" | "under_review" | "approved" | "rejected"
+      notification_category:
+        | "payment_updates"
+        | "withdraw_downtime"
+        | "investment_updates"
+        | "server_issues"
+        | "schedule_changes"
+        | "general"
       transaction_status: "pending" | "approved" | "rejected"
       transaction_type:
         | "deposit"
@@ -492,6 +624,8 @@ export type Database = {
         | "profit"
         | "bonus"
         | "referral"
+        | "transfer"
+      wallet_type: "main" | "investment"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -623,6 +757,14 @@ export const Constants = {
       app_role: ["user", "admin"],
       investment_status: ["active", "completed", "cancelled"],
       kyc_status: ["pending", "under_review", "approved", "rejected"],
+      notification_category: [
+        "payment_updates",
+        "withdraw_downtime",
+        "investment_updates",
+        "server_issues",
+        "schedule_changes",
+        "general",
+      ],
       transaction_status: ["pending", "approved", "rejected"],
       transaction_type: [
         "deposit",
@@ -631,7 +773,9 @@ export const Constants = {
         "profit",
         "bonus",
         "referral",
+        "transfer",
       ],
+      wallet_type: ["main", "investment"],
     },
   },
 } as const

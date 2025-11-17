@@ -77,11 +77,12 @@ export const useKYCStatus = () => {
   return {
     kyc,
     loading,
-    error,
+    error: error || '',
     isApproved,
     isPending,
     isUnderReview,
     isRejected,
+    rejectionReason: kyc?.rejection_reason,
     refreshKYC: fetchKYCStatus,
   };
 };

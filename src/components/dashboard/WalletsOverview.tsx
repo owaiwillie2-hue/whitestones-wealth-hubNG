@@ -44,9 +44,9 @@ export const WalletsOverview: React.FC<WalletsOverviewProps> = ({
 
       if (error) throw error;
 
-      setMainBalance(parseFloat(data?.main_balance || '0'));
-      setInvestmentBalance(parseFloat(data?.investment_balance || '0'));
-      setProfitBalance(parseFloat(data?.profit_balance || '0'));
+      setMainBalance(parseFloat(String(data?.main_balance || 0)));
+      setInvestmentBalance(parseFloat(String(data?.investment_balance || 0)));
+      setProfitBalance(parseFloat(String(data?.profit_balance || 0)));
     } catch (error: any) {
       console.error('Error fetching balances:', error);
       toast({
