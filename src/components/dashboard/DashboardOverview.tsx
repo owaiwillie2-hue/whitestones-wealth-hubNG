@@ -3,6 +3,7 @@ import { Card } from '@/components/ui/card';
 import { DollarSign, TrendingUp, Clock, Award } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import WalletsOverview from './WalletsOverview';
 
 const DashboardOverview = () => {
   const { user } = useAuth();
@@ -106,20 +107,27 @@ const DashboardOverview = () => {
         <p className="text-muted-foreground">Welcome back! Here's your account overview.</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {statCards.map((stat, index) => (
-          <Card key={index} className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground mb-1">{stat.title}</p>
-                <p className="text-2xl font-bold text-foreground">{stat.value}</p>
+      {/* Wallet Overview Section - Prominently Displayed */}
+      <WalletsOverview />
+
+      {/* Stats Overview */}
+      <div>
+        <h3 className="text-xl font-semibold text-foreground mb-4">Investment Statistics</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {statCards.map((stat, index) => (
+            <Card key={index} className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground mb-1">{stat.title}</p>
+                  <p className="text-2xl font-bold text-foreground">{stat.value}</p>
+                </div>
+                <div className={`p-3 rounded-full ${stat.bgColor}`}>
+                  <stat.icon className={`w-6 h-6 ${stat.color}`} />
+                </div>
               </div>
-              <div className={`p-3 rounded-full ${stat.bgColor}`}>
-                <stat.icon className={`w-6 h-6 ${stat.color}`} />
-              </div>
-            </div>
-          </Card>
-        ))}
+            </Card>
+          ))}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
