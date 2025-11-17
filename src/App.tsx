@@ -25,13 +25,15 @@ import KYC from "./pages/dashboard/KYC";
 import Settings from "./pages/dashboard/Settings";
 import ActivityLog from "./pages/dashboard/ActivityLog";
 import WithdrawalAccounts from "./pages/dashboard/WithdrawalAccounts";
-import AdminDashboard from "./pages/admin/Dashboard";
+import Admin from "./pages/admin/Admin";
+import AdminAnalytics from "./pages/admin/Analytics";
 import AdminUsers from "./pages/admin/Users";
 import AdminUserDetail from "./pages/admin/UserDetail";
 import AdminDeposits from "./pages/admin/Deposits";
 import AdminWithdrawals from "./pages/admin/Withdrawals";
 import AdminKYC from "./pages/admin/KYC";
 import AdminReferrals from "./pages/admin/Referrals";
+import AdminNotifications from "./pages/admin/Notifications";
 import AdminSettings from "./pages/admin/Settings";
 
 const queryClient = new QueryClient();
@@ -51,14 +53,18 @@ const App = () => (
         <Route path="/terms" element={<Terms />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        <Route path="/admin/users" element={<AdminUsers />} />
-        <Route path="/admin/users/:userId" element={<AdminUserDetail />} />
-        <Route path="/admin/deposits" element={<AdminDeposits />} />
-        <Route path="/admin/withdrawals" element={<AdminWithdrawals />} />
-        <Route path="/admin/kyc" element={<AdminKYC />} />
-        <Route path="/admin/referrals" element={<AdminReferrals />} />
-        <Route path="/admin/settings" element={<AdminSettings />} />
+        <Route path="/admin" element={<Admin />}>
+          <Route index element={<AdminAnalytics />} />
+          <Route path="dashboard" element={<AdminAnalytics />} />
+          <Route path="users" element={<AdminUsers />} />
+          <Route path="users/:userId" element={<AdminUserDetail />} />
+          <Route path="deposits" element={<AdminDeposits />} />
+          <Route path="withdrawals" element={<AdminWithdrawals />} />
+          <Route path="kyc" element={<AdminKYC />} />
+          <Route path="referrals" element={<AdminReferrals />} />
+          <Route path="notifications" element={<AdminNotifications />} />
+          <Route path="settings" element={<AdminSettings />} />
+        </Route>
         <Route path="/dashboard" element={<Dashboard />}>
               <Route index element={<DashboardOverview />} />
               <Route path="deposit" element={<Deposit />} />

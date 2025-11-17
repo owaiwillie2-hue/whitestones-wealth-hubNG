@@ -23,7 +23,7 @@ export const AdminLayout = () => {
   };
 
   const menuItems = [
-    { icon: LayoutDashboard, label: 'Analytics', path: '/admin/dashboard' },
+    { icon: LayoutDashboard, label: 'Analytics', path: '/admin' },
     { icon: Users, label: 'Users', path: '/admin/users' },
     { icon: DollarSign, label: 'Deposits', path: '/admin/deposits' },
     { icon: Download, label: 'Withdrawals', path: '/admin/withdrawals' },
