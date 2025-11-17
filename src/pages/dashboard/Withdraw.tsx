@@ -53,6 +53,36 @@ const Withdraw = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validate balance
+    const withdrawAmount = parseFloat(amount);
+    if (withdrawAmount <= 0) {
+      toast({
+        title: 'Invalid Amount',
+        description: 'Please enter a valid withdrawal amount.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    if (mainBalance <= 0) {
+      toast({
+        title: 'Insufficient Balance',
+        description: 'Your balance is $0. Please deposit funds first.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    if (withdrawAmount > mainBalance) {
+      toast({
+        title: 'Insufficient Balance',
+        description: `You cannot withdraw more than your available balance of $${mainBalance.toFixed(2)}.`,
+        variant: 'destructive',
+      });
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -61,7 +91,7 @@ const Withdraw = () => {
 
       const { error } = await supabase.from('withdrawals').insert({
         user_id: user.id,
-        amount: parseFloat(amount),
+        amount: withdrawAmount,
         withdrawal_account_id: selectedAccount,
         status: 'pending'
       });
@@ -164,10 +194,15 @@ const Withdraw = () => {
             <CardTitle>Withdrawal Request</CardTitle>
             <CardDescription>Select account and enter amount</CardDescription>
           </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label>Available Balance: ${mainBalance.toFixed(2)}</Label>
+            <CardContent>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Available Balance: ${mainBalance.toFixed(2)}</Label>
+                  {mainBalance <= 0 && (
+                    <p className="text-sm text-destructive">
+                      ⚠️ Insufficient balance - Please deposit funds first
+                    </p>
+                  )}
               </div>
 
               <div className="space-y-2">
