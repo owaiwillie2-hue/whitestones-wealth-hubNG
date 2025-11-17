@@ -121,38 +121,24 @@ const Plans = () => {
       // Log transaction
       const { error: txError } = await supabase
         .from('transactions')
-        .insert({
+        .insert([{
           user_id: user.id,
-          type: 'investment_started',
+          type: 'investment',
           amount: investAmount,
-          from_wallet: 'main',
-          to_wallet: 'investment',
-          status: 'completed',
-          metadata: {
-            plan_id: selectedPlan.id,
-            plan_name: selectedPlan.name,
-            roi_percentage: selectedPlan.roi_percentage,
-            duration_days: selectedPlan.duration_days,
-            expected_profit: expectedProfit,
-          },
-        });
+          balance_after: newMainBalance,
+        }]);
 
       if (txError) console.error('Transaction logging error:', txError);
 
       // Send notification
       const { error: notificationError } = await supabase
         .from('notifications')
-        .insert({
+        .insert([{
           user_id: user.id,
           title: 'Investment Started!',
           message: `You've invested $${investAmount} in ${selectedPlan.name} with ${selectedPlan.roi_percentage}% ROI. Expected profit: $${expectedProfit}. Funds will be returned in ${selectedPlan.duration_days} days.`,
-          category: 'investment_updates',
-          metadata: {
-            investment_plan: selectedPlan.name,
-            amount: investAmount,
-            roi_percentage: selectedPlan.roi_percentage,
-          },
-        });
+          category: 'investment_updates' as any,
+        }]);
 
       if (notificationError) console.error('Notification error:', notificationError);
 
@@ -189,7 +175,7 @@ const Plans = () => {
           </div>
         </div>
         <div className="mt-4">
-          <KYCStatusBadge />
+          <KYCStatusBadge isApproved={kycApproved} isPending={kycPending} isRejected={false} />
         </div>
       </div>
 
@@ -202,7 +188,7 @@ const Plans = () => {
         </Alert>
       )}
 
-      <KYCGuard isApproved={kycApproved} isPending={kycPending} actionName="Invest">
+      <KYCGuard isApproved={kycApproved} isPending={kycPending} isRejected={false} actionName="Invest">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
           {plans.map((plan) => (
             <Card key={plan.id} className="relative overflow-hidden">

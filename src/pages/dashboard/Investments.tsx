@@ -161,7 +161,7 @@ const Investments = () => {
 
           {/* Claim Profit Button */}
           {investment.status === 'active' && isExpired && (
-            <KYCGuard isApproved={kycApproved} isPending={kycPending} actionName="claim profits">
+            <KYCGuard isApproved={kycApproved} isPending={kycPending} isRejected={false} actionName="claim profits">
               <Button
                 onClick={() => handleClaimProfit(investment.id)}
                 disabled={completingId === investment.id || !kycApproved}
